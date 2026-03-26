@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
-    site: 'https://everssteeve.github.io',
-    base: '/AIAD-formation',
-    integrations: [mdx()],
+  site: 'https://everssteeve.github.io',
+  base: '/AIAD-formation/',
+  integrations: [mdx()],
 });
