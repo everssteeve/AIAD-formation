@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { title, description, currentOrder, steps } = Astro.props;
+const base = import.meta.env.BASE_URL;
 
 const sortedSteps = [...steps].sort((a, b) => a.order - b.order);
 const currentIndex = sortedSteps.findIndex((s) => s.order === currentOrder);
@@ -23,12 +24,12 @@ const nextStep = currentIndex < sortedSteps.length - 1 ? sortedSteps[currentInde
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title} — SDD Training</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
   </head>
   <body>
     <header class="site-header">
       <div class="site-header__inner">
-        <a href="/" class="site-header__title">SDD Training</a>
+        <a href={base} class="site-header__title">SDD Training</a>
       </div>
     </header>
 
@@ -40,7 +41,7 @@ const nextStep = currentIndex < sortedSteps.length - 1 ? sortedSteps[currentInde
             {sortedSteps.map((step) => (
               <li class="site-nav__item">
                 <a
-                  href={`/parcours/${step.slug}/`}
+                  href={`${base}parcours/${step.slug}/`}
                   class="site-nav__link"
                   aria-current={step.order === currentOrder ? 'page' : undefined}
                 >
@@ -61,13 +62,13 @@ const nextStep = currentIndex < sortedSteps.length - 1 ? sortedSteps[currentInde
 
         <nav class="step-nav" aria-label="Navigation entre étapes">
           {prevStep ? (
-            <a href={`/parcours/${prevStep.slug}/`} class="step-nav__link step-nav__link--prev">
+            <a href={`${base}parcours/${prevStep.slug}/`} class="step-nav__link step-nav__link--prev">
               <span class="step-nav__label">Précédent</span>
               <span class="step-nav__title">{prevStep.title}</span>
             </a>
           ) : <div />}
           {nextStep ? (
-            <a href={`/parcours/${nextStep.slug}/`} class="step-nav__link step-nav__link--next">
+            <a href={`${base}parcours/${nextStep.slug}/`} class="step-nav__link step-nav__link--next">
               <span class="step-nav__label">Suivant</span>
               <span class="step-nav__title">{nextStep.title}</span>
             </a>
