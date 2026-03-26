@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  currentOrder: number;
+  steps: Array<{ title: string; slug: string; order: number }>;
+}
+
+const { title, description, currentOrder, steps } = Astro.props;
+
+const sortedSteps = [...steps].sort((a, b) => a.order - b.order);
+const currentIndex = sortedSteps.findIndex((s) => s.order === currentOrder);
+const prevStep = currentIndex > 0 ? sortedSteps[currentIndex - 1] : null;
+const nextStep = currentIndex < sortedSteps.length - 1 ? sortedSteps[currentIndex + 1] : null;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title} — SDD Training</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="/" class="site-header__title">SDD Training</a>
+      </div>
+    </header>
+
+    <div class="site-layout">
+      <aside class="site-nav">
+        <nav aria-label="Étapes du parcours">
+          <p class="site-nav__title">Parcours SDD</p>
+          <ol class="site-nav__list">
+            {sortedSteps.map((step) => (
+              <li class="site-nav__item">
+                <a
+                  href={`/parcours/${step.slug}/`}
+                  class="site-nav__link"
+                  aria-current={step.order === currentOrder ? 'page' : undefined}
+                >
+                  {step.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+
+      <main class="site-content">
+        <article>
+          <h1>{title}</h1>
+          <p class="site-content__description">{description}</p>
+          <slot />
+        </article>
+
+        <nav class="step-nav" aria-label="Navigation entre étapes">
+          {prevStep ? (
+            <a href={`/parcours/${prevStep.slug}/`} class="step-nav__link step-nav__link--prev">
+              <span class="step-nav__label">Précédent</span>
+              <span class="step-nav__title">{prevStep.title}</span>
+            </a>
+          ) : <div />}
+          {nextStep ? (
+            <a href={`/parcours/${nextStep.slug}/`} class="step-nav__link step-nav__link--next">
+              <span class="step-nav__label">Suivant</span>
+              <span class="step-nav__title">{nextStep.title}</span>
+            </a>
+          ) : null}
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx aiad-sdd:*)",
+      "Bash(npm init:*)",
+      "Bash(npx -y create-astro@latest . --template minimal --no-install --skip-houston)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(npx astro:*)",
+      "Bash(npm i:*)"
+    ]
+  }
+}

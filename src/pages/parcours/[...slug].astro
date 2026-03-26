@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import TrainingLayout from '../../layouts/TrainingLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('parcours');
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.mdx?$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const allEntries = await getCollection('parcours');
+const steps = allEntries.map((e) => ({
+  title: e.data.title,
+  slug: e.id.replace(/\.mdx?$/, ''),
+  order: e.data.order,
+}));
+---
+
+<TrainingLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  currentOrder={entry.data.order}
+  steps={steps}
+>
+  <Content />
+</TrainingLayout>
